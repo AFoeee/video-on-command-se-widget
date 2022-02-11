@@ -1,200 +1,629 @@
 {
-  "command1": {
-    "type": "text",
-    "label": "Command to start video1",
-    "value": "!showvideo1"
-  },
-  "video1": {
-   "type": "video-input",
-   "label": "Video1"
-  },
-  "volumevid1": {
-    "type": "slider",
-    "label": "Video1 volume: ",
-    "min": 1,
-    "max":100,
-    "value":50
-  },
-  "cooldown1": {
-    "type": "number",
-    "label": "Cool down seconds for command1: ",
-    "value": 60,
-    "min": 0,
-    "step": 1
-  },
-  "command2": {
-    "type": "text",
-    "label": "Command to start video2",
-    "value": "!showvideo2"
-  },
-  "video2": {
-   "type": "video-input",
-   "label": "Video2"
-  },
-  "volumevid2": {
-    "type": "slider",
-    "label": "Video2 volume: ",
-    "min": 1,
-    "max":100,
-    "value":50
-  },
-  "cooldown2": {
-    "type": "number",
-    "label": "Cool down seconds for command2: ",
-    "value": 60,
-    "min": 0,
-    "step": 1
-  },
-  "command3": {
-    "type": "text",
-    "label": "Command to start audio1",
-    "value": "!audio1"
-  },
-  "audio1": {
-   "type": "sound-input",
-   "label": "Audio1"
-  },
-  "volumeaudio1": {
-    "type": "slider",
-    "label": "Audio1 volume: ",
-    "min": 1,
-    "max":100,
-    "value":50
-  },
-  "command4": {
-    "type": "text",
-    "label": "Command to start audio1",
-    "value": "!audio2"
-  },
-  "audio2": {
-   "type": "sound-input",
-   "label": "Audio2"
-  },
-  "volumeaudio2": {
-    "type": "slider",
-    "label": "Audio2 volume: ",
-    "min": 1,
-    "max":100,
-    "value":50
-  },
   "managePermissions": {
-    "type": "dropdown",
-    "label": "Who can start video:",
-    "value": "everyone",
+    "type": "dropdown", 
+    "label": "Who can trigger the widget?", 
     "options": {
-      "streamer": "Streamer",
-      "mods": "Streamer + Mods",
-      "vips": "Streamer + Mods + Vips",
+      "streamer": "Streamer", 
+      "mods": "Streamer + Mods", 
+      "vips": "Streamer + Mods + Vips", 
       "everyone": "No restrictions"
-    }
-  },
+    }, 
+    "value": "vips", 
+    "group": "Global settings"
+  }, 
   "otherUsers": {
-    "type": "text",
-    "label": "Additional users (comma separated)",
-    "value": "person1,person2"
-  },
+    "type": "text", 
+    "label": "Additional users (comma separated):", 
+    "value": "", 
+    "group": "Global settings"
+  }, 
   "blockedUsers": {
-    "type": "text",
-    "label": "Blocked users (comma separated)",
-    "value": "person1,person2"
-  },
-  "timeIn": {
-    "type": "number",
-    "label": "Animation In time ms",
-    "value": 400
-  },
-  "timeOut": {
-    "type": "number",
-    "label": "Animation Out time ms",
-    "value": 400
-  },
+    "type": "text", 
+    "label": "Blocked users (comma separated):", 
+    "value": "", 
+    "group": "Global settings"
+  }, 
+  "globalcooldown": {
+    "type": "number", 
+    "label": "Global cooldown in sec for commands:", 
+    "min": 0, 
+    "value": 300, 
+    "step": 1, 
+    "group": "Global settings"
+  }, 
+  
   "animationIn": {
-    "type": "dropdown",
-    "label": "Animation In:",
-    "value": "bounceIn",
+    "type": "dropdown", 
+    "label": "AnimationIn:", 
     "options": {
-      "none": "None",
-      "bounceIn": "bounceIn",
-      "bounceInDown": "bounceInDown",
-      "bounceInLeft": "bounceInLeft",
-      "bounceInRight": "bounceInRight",
-      "bounceInUp": "bounceInUp",
-      "fadeIn": "fadeIn",
-      "fadeInDown": "fadeInDown",
-      "fadeInDownBig": "fadeInDownBig",
-      "fadeInLeft": "fadeInLeft",
-      "fadeInLeftBig": "fadeInLeftBig",
-      "fadeInRight": "fadeInRight",
-      "fadeInRightBig": "fadeInRightBig",
-      "fadeInUp": "fadeInUp",
-      "fadeInUpBig": "fadeInUpBig",
-      "flipInX": "flipInX",
-      "flipInY": "flipInY",
-      "lightSpeedIn": "lightSpeedIn",
-      "rotateIn": "rotateIn",
-      "rotateInDownLeft": "rotateInDownLeft",
-      "rotateInDownRight": "rotateInDownRight",
-      "rotateInUpLeft": "rotateInUpLeft",
-      "rotateInUpRight": "rotateInUpRight",
-      "slideInUp": "slideInUp",
-      "slideInDown": "slideInDown",
-      "slideInLeft": "slideInLeft",
-      "slideInRight": "slideInRight",
-      "zoomIn": "zoomIn",
-      "zoomInDown": "zoomInDown",
-      "zoomInLeft": "zoomInLeft",
-      "zoomInRight": "zoomInRight",
-      "zoomInUp": "zoomInUp",
-      "jackInTheBox": "jackInTheBox",
-      "rollIn": "rollIn"
-    }
-  },
+      "noneIn": "none", 
+      "backInDown": "backInDown", 
+      "backInLeft": "backInLeft", 
+      "backInRight": "backInRight", 
+      "backInUp": "backInUp", 
+      "bounceIn": "bounceIn", 
+      "bounceInDown": "bounceInDown", 
+      "bounceInLeft": "bounceInLeft", 
+      "bounceInRight": "bounceInRight", 
+      "bounceInUp": "bounceInUp", 
+      "fadeIn": "fadeIn", 
+      "fadeInBottomLeft": "fadeInBottomLeft", 
+      "fadeInBottomRight": "fadeInBottomRight", 
+      "fadeInDown": "fadeInDown", 
+      "fadeInDownBig": "fadeInDownBig", 
+      "fadeInLeft": "fadeInLeft", 
+      "fadeInLeftBig": "fadeInLeftBig", 
+      "fadeInRight": "fadeInRight", 
+      "fadeInRightBig": "fadeInRightBig", 
+      "fadeInTopLeft": "fadeInTopLeft", 
+      "fadeInTopRight": "fadeInTopRight", 
+      "fadeInUp": "fadeInUp", 
+      "fadeInUpBig": "fadeInUpBig", 
+      "flipInX": "flipInX", 
+      "flipInY": "flipInY", 
+      "jackInTheBox": "jackInTheBox", 
+      "lightSpeedInLeft": "lightSpeedInLeft", 
+      "lightSpeedInRight": "lightSpeedInRight", 
+      "rollIn": "rollIn", 
+      "rotateIn": "rotateIn", 
+      "rotateInDownLeft": "rotateInDownLeft", 
+      "rotateInDownRight": "rotateInDownRight", 
+      "rotateInUpLeft": "rotateInUpLeft", 
+      "rotateInUpRight": "rotateInUpRight", 
+      "slideInDown": "slideInDown", 
+      "slideInLeft": "slideInLeft", 
+      "slideInRight": "slideInRight", 
+      "slideInUp": "slideInUp", 
+      "zoomIn": "zoomIn", 
+      "zoomInDown": "zoomInDown", 
+      "zoomInLeft": "zoomInLeft", 
+      "zoomInRight": "zoomInRight", 
+      "zoomInUp": "zoomInUp"
+    }, 
+    "value": "bounceIn", 
+    "group": "Animation settings"
+  }, 
+  "timeIn": {
+    "type": "number", 
+    "label": "AnimationIn time in sec:", 
+    "min": 0, 
+    "value": 0.4, 
+    "group": "Animation settings"
+  }, 
   "animationOut": {
-    "type": "dropdown",
-    "label": "Animation Out:",
-    "value": "bounceOut",
+    "type": "dropdown", 
+    "label": "AnimationOut:", 
     "options": {
-      "none": "None",
-      "bounceOut": "bounceOut",
-      "bounceOutDown": "bounceOutDown",
-      "bounceOutLeft": "bounceOutLeft",
-      "bounceOutRight": "bounceOutRight",
-      "bounceOutUp": "bounceOutUp",
-      "fadeOut": "fadeOut",
-      "fadeOutDown": "fadeOutDown",
-      "fadeOutDownBig": "fadeOutDownBig",
-      "fadeOutLeft": "fadeOutLeft",
-      "fadeOutLeftBig": "fadeOutLeftBig",
-      "fadeOutRight": "fadeOutRight",
-      "fadeOutRightBig": "fadeOutRightBig",
-      "fadeOutUp": "fadeOutUp",
-      "fadeOutUpBig": "fadeOutUpBig",
-      "flipOutX": "flipOutX",
-      "flipOutY": "flipOutY",
-      "lightSpeedOut": "lightSpeedOut",
-      "rotateOut": "rotateOut",
-      "rotateOutDownLeft": "rotateOutDownLeft",
-      "rotateOutDownRight": "rotateOutDownRight",
-      "rotateOutUpLeft": "rotateOutUpLeft",
-      "rotateOutUpRight": "rotateOutUpRight",
-      "slideOutUp": "slideOutUp",
-      "slideOutDown": "slideOutDown",
-      "slideOutLeft": "slideOutLeft",
-      "slideOutRight": "slideOutRight",
-      "zoomOut": "zoomOut",
-      "zoomOutDown": "zoomOutDown",
-      "zoomOutLeft": "zoomOutLeft",
-      "zoomOutRight": "zoomOutRight",
-      "zoomOutUp": "zoomOutUp",
-      "rollOut": "rollOut"
-    }
-  },
-  "widgetName":{
-   "value":"VideoOnCommand",
-   "type":"hidden"
-  },
-  "widgetAuthor":{
-   "value":"Benno",
-   "type":"hidden"
+      "noneOut": "none", 
+      "backOutDown": "backOutDown", 
+      "backOutLeft": "backOutLeft", 
+      "backOutRight": "backOutRight", 
+      "backOutUp": "backOutUp", 
+      "bounceOut": "bounceOut", 
+      "bounceOutDown": "bounceOutDown", 
+      "bounceOutLeft": "bounceOutLeft", 
+      "bounceOutRight": "bounceOutRight", 
+      "bounceOutUp": "bounceOutUp", 
+      "fadeOut": "fadeOut", 
+      "fadeOutBottomLeft": "fadeOutBottomLeft", 
+      "fadeOutBottomRight": "fadeOutBottomRight", 
+      "fadeOutDown": "fadeOutDown", 
+      "fadeOutDownBig": "fadeOutDownBig", 
+      "fadeOutLeft": "fadeOutLeft", 
+      "fadeOutLeftBig": "fadeOutLeftBig", 
+      "fadeOutRight": "fadeOutRight", 
+      "fadeOutRightBig": "fadeOutRightBig", 
+      "fadeOutTopLeft": "fadeOutTopLeft", 
+      "fadeOutTopRight": "fadeOutTopRight", 
+      "fadeOutUp": "fadeOutUp", 
+      "fadeOutUpBig": "fadeOutUpBig", 
+      "flipOutX": "flipOutX", 
+      "flipOutY": "flipOutY", 
+      "lightSpeedOutLeft": "lightSpeedOutLeft", 
+      "lightSpeedOutRight": "lightSpeedOutRight", 
+      "rollOut": "rollOut", 
+      "rotateOut": "rotateOut", 
+      "rotateOutDownLeft": "rotateOutDownLeft", 
+      "rotateOutDownRight": "rotateOutDownRight", 
+      "rotateOutUpLeft": "rotateOutUpLeft", 
+      "rotateOutUpRight": "rotateOutUpRight", 
+      "slideOutDown": "slideOutDown", 
+      "slideOutLeft": "slideOutLeft", 
+      "slideOutRight": "slideOutRight", 
+      "slideOutUp": "slideOutUp", 
+      "zoomOut": "zoomOut", 
+      "zoomOutDown": "zoomOutDown", 
+      "zoomOutLeft": "zoomOutLeft", 
+      "zoomOutRight": "zoomOutRight", 
+      "zoomOutUp": "zoomOutUp"
+    }, 
+    "value": "bounceOut", 
+    "group": "Animation settings"
+  }, 
+  "timeOut": {
+    "type": "number", 
+    "label": "AnimationOut time in sec:", 
+    "min": 0, 
+    "value": 0.4, 
+    "group": "Animation settings"
+  }, 
+  
+  "caseSensitivity": {
+    "type": "dropdown", 
+    "label": "Are commands case sensitive?", 
+    "options": {
+      "enabled": "yes", 
+      "disabled": "no"
+    }, 
+    "value": "disabled", 
+    "group": "Comparision Settings"
+  }, 
+  
+  "video1_command": {
+    "type": "text", 
+    "label": "Command to start video:", 
+    "value": "!video1", 
+    "group": "Video #1"
+  }, 
+  "video1_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Video #1"
+  }, 
+  "video1_url": {
+    "type": "video-input", 
+    "label": "Video:", 
+    "multiple": false, 
+    "group": "Video #1"
+  }, 
+  "video1_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Video #1"
+  }, 
+  "video1_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for video:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Video #1"
+  }, 
+  
+  "video2_command": {
+    "type": "text", 
+    "label": "Command to start video:", 
+    "value": "!video2", 
+    "group": "Video #2"
+  }, 
+  "video2_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Video #2"
+  }, 
+  "video2_url": {
+    "type": "video-input", 
+    "label": "Video:", 
+    "multiple": false, 
+    "group": "Video #2"
+  }, 
+  "video2_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Video #2"
+  }, 
+  "video2_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for video:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Video #2"
+  }, 
+  
+  "video3_command": {
+    "type": "text", 
+    "label": "Command to start video:", 
+    "value": "!video3", 
+    "group": "Video #3"
+  }, 
+  "video3_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Video #3"
+  }, 
+  "video3_url": {
+    "type": "video-input", 
+    "label": "Video:", 
+    "multiple": false, 
+    "group": "Video #3"
+  }, 
+  "video3_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Video #3"
+  }, 
+  "video3_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for video:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Video #3"
+  }, 
+  
+  
+  "video4_command": {
+    "type": "text", 
+    "label": "Command to start video:", 
+    "value": "!video4", 
+    "group": "Video #4"
+  }, 
+  "video4_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Video #4"
+  }, 
+  "video4_url": {
+    "type": "video-input", 
+    "label": "Video:", 
+    "multiple": false, 
+    "group": "Video #4"
+  }, 
+  "video4_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Video #4"
+  }, 
+  "video4_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for video:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Video #4"
+  }, 
+  
+  
+  "video5_command": {
+    "type": "text", 
+    "label": "Command to start video:", 
+    "value": "!video5", 
+    "group": "Video #5"
+  }, 
+  "video5_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Video #5"
+  }, 
+  "video5_url": {
+    "type": "video-input", 
+    "label": "Video:", 
+    "multiple": true, 
+    "group": "Video #5"
+  }, 
+  "video5_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Video #5"
+  }, 
+  "video5_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for video:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Video #5"
+  }, 
+  
+  "audio1_command": {
+    "type": "text", 
+    "label": "Command to start audio:", 
+    "value": "!audio1", 
+    "group": "Audio #1"
+  }, 
+  "audio1_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Audio #1"
+  }, 
+  "audio1_url": {
+    "type": "sound-input", 
+    "label": "Audio:", 
+    "multiple": false, 
+    "group": "Audio #1"
+  }, 
+  "audio1_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Audio #1"
+  }, 
+  "audio1_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for audio:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Audio #1"
+  }, 
+  
+  "audio2_command": {
+    "type": "text", 
+    "label": "Command to start audio:", 
+    "value": "!audio2", 
+    "group": "Audio #2"
+  }, 
+  "audio2_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Audio #2"
+  }, 
+  "audio2_url": {
+    "type": "sound-input", 
+    "label": "Audio:", 
+    "multiple": false, 
+    "group": "Audio #2"
+  }, 
+  "audio2_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Audio #2"
+  }, 
+  "audio2_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for audio:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Audio #2"
+  }, 
+  
+  "audio3_command": {
+    "type": "text", 
+    "label": "Command to start audio:", 
+    "value": "!audio3", 
+    "group": "Audio #3"
+  }, 
+  "audio3_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Audio #3"
+  }, 
+  "audio3_url": {
+    "type": "sound-input", 
+    "label": "Audio:", 
+    "multiple": false, 
+    "group": "Audio #3"
+  }, 
+  "audio3_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Audio #3"
+  }, 
+  "audio3_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for audio:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Audio #3"
+  }, 
+  
+  "audio4_command": {
+    "type": "text", 
+    "label": "Command to start audio:", 
+    "value": "!audio4", 
+    "group": "Audio #4"
+  }, 
+  "audio4_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Audio #4"
+  }, 
+  "audio4_url": {
+    "type": "sound-input", 
+    "label": "Audio:", 
+    "multiple": false, 
+    "group": "Audio #4"
+  }, 
+  "audio4_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Audio #4"
+  }, 
+  "audio4_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for audio:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Audio #4"
+  }, 
+  
+  "audio5_command": {
+    "type": "text", 
+    "label": "Command to start audio:", 
+    "value": "!audio5", 
+    "group": "Audio #5"
+  }, 
+  "audio5_comparisonMode": {
+    "type": "dropdown", 
+    "label": "How to compare chat msg with cmd?", 
+    "options": {
+      "strict": "msg = cmd", 
+      "firstWord": "cmd is first (single) word", 
+      "firstWordStartsWith": "first (single) word begins with cmd", 
+      "someWord": "cmd is a (single) word in msg", 
+      "someWordStartsWith": "some (single) word begins with cmd", 
+      "regex": "cmd is treated as regular expression"
+    }, 
+    "value": "strict", 
+    "group": "Audio #5"
+  }, 
+  "audio5_url": {
+    "type": "sound-input", 
+    "label": "Audio:", 
+    "multiple": true, 
+    "group": "Audio #5"
+  }, 
+  "audio5_volume": {
+    "type": "slider", 
+    "label": "Volume:", 
+    "min": 0, 
+    "max": 100, 
+    "value": 50, 
+    "step": 1, 
+    "group": "Audio #5"
+  }, 
+  "audio5_cooldown": {
+    "type": "number", 
+    "label": "Cool down seconds for audio:", 
+    "min": 0, 
+    "value": 60, 
+    "step": 1, 
+    "group": "Audio #5"
+  }, 
+  
+  "debugMode": {
+    "type": "dropdown", 
+    "label": "Log debug messages? (F12)", 
+    "options": {
+      "enabled": "yes", 
+      "disabled": "no"
+    }, 
+    "value": "disabled", 
+    "group": "Widget Data"
+  }, 
+  "widgetName": {
+    "value": "VideoOnCommand", 
+    "type": "hidden", 
+    "group": "Widget Data"
+  }, 
+  "widgetAuthor": {
+    "value": "Benno, avoeh, Suerion", 
+    "type": "hidden", 
+    "group": "Widget Data"
+  }, 
+  "widgetVersion": {
+    "value": 4, 
+    "type": "hidden", 
+    "group": "Widget Data"
   }
 }

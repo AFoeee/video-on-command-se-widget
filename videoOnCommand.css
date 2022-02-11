@@ -1,5 +1,39 @@
 .main-container {
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 
+#video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      /* centers the video. */
+}
+
+/* The animate.css library lacks classes that don't involve animations (for 
+ * obvious reasons). Nevertheless, the lists in 'Fields' do include such options.
+ * To compensate that I declared them here. */
+@keyframes animate__noneIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate__noneIn {
+  animation: animate__noneIn steps(1);
+}
+
+@keyframes animate__noneOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate__noneOut {
+  animation: animate__noneOut steps(1);
+}
