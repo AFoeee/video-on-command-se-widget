@@ -1,6 +1,6 @@
 /* 
  * A version of the 'Video On Command' widget originally written by Benno.
- * This code builds on Suerion's variation of the previously mentioned widget.
+ * This code builds on Suerion's variation of the said widget.
  * 
  * Special thanks to Benno, Suerion, lx, thefyrewire, SquidCharger and ca11.
  */
@@ -381,7 +381,7 @@ window.addEventListener('onEventReceived', function (obj) {
     let mediaCmd = mediaCommands.find((cmd) => cmd.isTriggeredBy(msg));
     
     if (!(mediaCmd instanceof MediaCommand)) {
-      log ("No MediaCommand (with an associated URL) declared a match.");
+      log ("No MediaCommand (with an associated URL) reported a match.");
       return;
     }
     
