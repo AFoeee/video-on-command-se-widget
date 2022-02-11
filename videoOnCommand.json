@@ -1,0 +1,200 @@
+{
+  "command1": {
+    "type": "text",
+    "label": "Command to start video1",
+    "value": "!showvideo1"
+  },
+  "video1": {
+   "type": "video-input",
+   "label": "Video1"
+  },
+  "volumevid1": {
+    "type": "slider",
+    "label": "Video1 volume: ",
+    "min": 1,
+    "max":100,
+    "value":50
+  },
+  "cooldown1": {
+    "type": "number",
+    "label": "Cool down seconds for command1: ",
+    "value": 60,
+    "min": 0,
+    "step": 1
+  },
+  "command2": {
+    "type": "text",
+    "label": "Command to start video2",
+    "value": "!showvideo2"
+  },
+  "video2": {
+   "type": "video-input",
+   "label": "Video2"
+  },
+  "volumevid2": {
+    "type": "slider",
+    "label": "Video2 volume: ",
+    "min": 1,
+    "max":100,
+    "value":50
+  },
+  "cooldown2": {
+    "type": "number",
+    "label": "Cool down seconds for command2: ",
+    "value": 60,
+    "min": 0,
+    "step": 1
+  },
+  "command3": {
+    "type": "text",
+    "label": "Command to start audio1",
+    "value": "!audio1"
+  },
+  "audio1": {
+   "type": "sound-input",
+   "label": "Audio1"
+  },
+  "volumeaudio1": {
+    "type": "slider",
+    "label": "Audio1 volume: ",
+    "min": 1,
+    "max":100,
+    "value":50
+  },
+  "command4": {
+    "type": "text",
+    "label": "Command to start audio1",
+    "value": "!audio2"
+  },
+  "audio2": {
+   "type": "sound-input",
+   "label": "Audio2"
+  },
+  "volumeaudio2": {
+    "type": "slider",
+    "label": "Audio2 volume: ",
+    "min": 1,
+    "max":100,
+    "value":50
+  },
+  "managePermissions": {
+    "type": "dropdown",
+    "label": "Who can start video:",
+    "value": "everyone",
+    "options": {
+      "streamer": "Streamer",
+      "mods": "Streamer + Mods",
+      "vips": "Streamer + Mods + Vips",
+      "everyone": "No restrictions"
+    }
+  },
+  "otherUsers": {
+    "type": "text",
+    "label": "Additional users (comma separated)",
+    "value": "person1,person2"
+  },
+  "blockedUsers": {
+    "type": "text",
+    "label": "Blocked users (comma separated)",
+    "value": "person1,person2"
+  },
+  "timeIn": {
+    "type": "number",
+    "label": "Animation In time ms",
+    "value": 400
+  },
+  "timeOut": {
+    "type": "number",
+    "label": "Animation Out time ms",
+    "value": 400
+  },
+  "animationIn": {
+    "type": "dropdown",
+    "label": "Animation In:",
+    "value": "bounceIn",
+    "options": {
+      "none": "None",
+      "bounceIn": "bounceIn",
+      "bounceInDown": "bounceInDown",
+      "bounceInLeft": "bounceInLeft",
+      "bounceInRight": "bounceInRight",
+      "bounceInUp": "bounceInUp",
+      "fadeIn": "fadeIn",
+      "fadeInDown": "fadeInDown",
+      "fadeInDownBig": "fadeInDownBig",
+      "fadeInLeft": "fadeInLeft",
+      "fadeInLeftBig": "fadeInLeftBig",
+      "fadeInRight": "fadeInRight",
+      "fadeInRightBig": "fadeInRightBig",
+      "fadeInUp": "fadeInUp",
+      "fadeInUpBig": "fadeInUpBig",
+      "flipInX": "flipInX",
+      "flipInY": "flipInY",
+      "lightSpeedIn": "lightSpeedIn",
+      "rotateIn": "rotateIn",
+      "rotateInDownLeft": "rotateInDownLeft",
+      "rotateInDownRight": "rotateInDownRight",
+      "rotateInUpLeft": "rotateInUpLeft",
+      "rotateInUpRight": "rotateInUpRight",
+      "slideInUp": "slideInUp",
+      "slideInDown": "slideInDown",
+      "slideInLeft": "slideInLeft",
+      "slideInRight": "slideInRight",
+      "zoomIn": "zoomIn",
+      "zoomInDown": "zoomInDown",
+      "zoomInLeft": "zoomInLeft",
+      "zoomInRight": "zoomInRight",
+      "zoomInUp": "zoomInUp",
+      "jackInTheBox": "jackInTheBox",
+      "rollIn": "rollIn"
+    }
+  },
+  "animationOut": {
+    "type": "dropdown",
+    "label": "Animation Out:",
+    "value": "bounceOut",
+    "options": {
+      "none": "None",
+      "bounceOut": "bounceOut",
+      "bounceOutDown": "bounceOutDown",
+      "bounceOutLeft": "bounceOutLeft",
+      "bounceOutRight": "bounceOutRight",
+      "bounceOutUp": "bounceOutUp",
+      "fadeOut": "fadeOut",
+      "fadeOutDown": "fadeOutDown",
+      "fadeOutDownBig": "fadeOutDownBig",
+      "fadeOutLeft": "fadeOutLeft",
+      "fadeOutLeftBig": "fadeOutLeftBig",
+      "fadeOutRight": "fadeOutRight",
+      "fadeOutRightBig": "fadeOutRightBig",
+      "fadeOutUp": "fadeOutUp",
+      "fadeOutUpBig": "fadeOutUpBig",
+      "flipOutX": "flipOutX",
+      "flipOutY": "flipOutY",
+      "lightSpeedOut": "lightSpeedOut",
+      "rotateOut": "rotateOut",
+      "rotateOutDownLeft": "rotateOutDownLeft",
+      "rotateOutDownRight": "rotateOutDownRight",
+      "rotateOutUpLeft": "rotateOutUpLeft",
+      "rotateOutUpRight": "rotateOutUpRight",
+      "slideOutUp": "slideOutUp",
+      "slideOutDown": "slideOutDown",
+      "slideOutLeft": "slideOutLeft",
+      "slideOutRight": "slideOutRight",
+      "zoomOut": "zoomOut",
+      "zoomOutDown": "zoomOutDown",
+      "zoomOutLeft": "zoomOutLeft",
+      "zoomOutRight": "zoomOutRight",
+      "zoomOutUp": "zoomOutUp",
+      "rollOut": "rollOut"
+    }
+  },
+  "widgetName":{
+   "value":"VideoOnCommand",
+   "type":"hidden"
+  },
+  "widgetAuthor":{
+   "value":"Benno",
+   "type":"hidden"
+  }
+}
