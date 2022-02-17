@@ -1,15 +1,16 @@
 /* 
  * A version of the 'Video On Command' widget originally written by Benno.
- * This code builds on Suerion's variation of the said widget.
+ * This code builds on Suerion's variation of the said widget (v3).
  * 
- * Special thanks to Benno, Suerion, lx, thefyrewire, SquidCharger and ca11.
+ * Special thanks to Benno, Suerion, lx, thefyrewire, Reboot0, SquidCharger and 
+ * ca11.
  */
 
 
 /* Prefixes defined in 'Fields' are only taken into account if they are also
  * specified in one of the two lists below. They're prioritized in the same order
  * as they appear in the list. */
-let videoPrefixes = [
+const videoPrefixes = [
   "video1", 
   "video2", 
   "video3", 
@@ -17,7 +18,7 @@ let videoPrefixes = [
   "video5"
 ];
 
-let audioPrefixes = [
+const audioPrefixes = [
   "audio1", 
   "audio2", 
   "audio3", 
@@ -25,15 +26,21 @@ let audioPrefixes = [
   "audio5"
 ];
 
-let allowed = false;                // Blocks the widget if necessary.
-let fieldData = {};                 // Config data from 'Fields'.
-let channelName = "";               // Username of the broadcaster.
-let mediaCommands = [];             // Holds all types of MediaCommand objects.
+let allowed = false;                // Blocks the widget when busy.
+const mediaCommands = [];           // Holds all types of MediaCommand objects.
+
+let isUsableByEveryone;             // If true, everyone can trigger the widget.
+let isUsableByMods;
+let isUsableByVips;
+let isUsableBySubs;
+let otherUsers;                     // Those users can trigger the widget, too.
+let blockedUsers;                   // Those users are ignored by the widget.
+let isCaseIgnored;                  // If true, the 'i' flag is set in RegExp.
 
 
 /* Triggers CSS animations by adding animate.css classes. Their effect is 
  * sustained as long as they're attached to the element. Therefore, they are 
- * only removed shortly before being replaced by other animate.css classes. */
+ * only removed to immediately replace them with other animate.css classes. */
 function animateCss(node, animationName, duration = 1, prefix = 'animate__') {
   // animate.css classes do have a prefix (since version 4.0).
   const envCls = `${prefix}animated`;
@@ -58,18 +65,23 @@ function animateCss(node, animationName, duration = 1, prefix = 'animate__') {
 }
 
 
-// Convenience function for debugging mode.
-function log(msg) {
-  if (fieldData.debugMode !== "enabled") return;
-  
-  console.log(msg);
+/* Prepares a string to be used in a RegExp by escaping problematic characters. 
+ * (Found in Mozilla's RegExp guide.) */
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+
+// Uses the input of a media field to test whether media was added to it.
+function isMediaFieldPopulated(input) {
+  return (input && (Array.isArray(input) ? (input.length > 0) : true));
 }
 
 
 /* Abstract base class, which defines ...
  * ... general media attributes.
  * ... how the command is triggered.
- * ... how the cooldown mechanism works. 
+ * ... how the cooldown mechanism works.
  * ... which url is used (if multiple are provided). */
 class MediaCommand {
   static globalCooldownMillis = {{globalcooldown}} * 1000;
@@ -82,15 +94,10 @@ class MediaCommand {
   #url;
   normalizedVolume;
   
-  isTriggeredBy;
+  regex;
   
   constructor(
-      commandStr, 
-      url, 
-      volumePct, 
-      cooldownSec, 
-      comparisonMode = "strict", 
-      isCaseSensitive) {
+      commandStr, url, volumePct, cooldownSec, comparisonMode = "strict") {
     
     if (new.target === MediaCommand) {
       throw TypeError("new of abstract class MediaCommand.");
@@ -101,74 +108,54 @@ class MediaCommand {
     this.normalizedVolume = volumePct / 100;
     this.cooldownMillis = cooldownSec * 1000;
     
-    // The function that gets selected determines how a match is defined.
-    if (comparisonMode === 'regex') {
-      /* Converting a regex string to lower case is problematic as it might 
-       * change the meaning. Therefore the 'i' flag is used, which indicates
-       * that case should be ignored while attempting a match in a string. */
-      let re = new RegExp(
-          commandStr, 
-          isCaseSensitive ? undefined : 'i');
-      
-      this.isTriggeredBy = (msg) => re.test(msg);
-      
-    } else {
-      /* Case insensitivity is achieved by converting both strings to lower case.
-       * The convertion of the chat message happens through a decorator wrapper. */
-      let cmd = isCaseSensitive ? commandStr : commandStr.toLowerCase();
-      let compFunc;
-      
-      switch (comparisonMode) {
-        case 'strict': 
-            compFunc = (msg) => (msg === cmd);
-            break;
-            
-        case 'firstWord': 
-            compFunc = (msg) => (msg.trimStart().split(' ', 1)[0] === cmd);
-            break;
-            
-        case 'firstWordStartsWith': 
-            compFunc = (msg) => msg.trimStart().startsWith(cmd);
-            break;
-            
-        case 'someWord': 
-            compFunc = (msg) => msg.split(' ').includes(cmd);
-            break;
-            
-        case 'someWordStartsWith': 
-            compFunc = 
-                (msg) => msg.split(' ').some(
-                    (str) => str.startsWith(cmd));
-            break;
-            
-        default: 
-            throw new Error(
-                this.constructor.name + 
-                " constructor encountered an unknown switch value: " + 
-                comparisonMode);
-      }
-      
-      if (isCaseSensitive) {
-        this.isTriggeredBy = compFunc;
-      } else {
-        // Said decorator wrapper, that converts the chat msg to lower case.
-        this.isTriggeredBy = (msg) => compFunc(msg.toLowerCase());
-      }
+    /* Defines which characters are ignored, when they directly surround the 
+     * command. The punctuation was added to the regex group for user convenience 
+     * only. */
+    const reLookbehind = "(?<=[.,;:!? ]|^)";
+    const reLookahead = "(?=[.,;:!?' ]|$)";
+    
+    let reStr;
+    
+    // The selected search pattern decides when the command is triggered.
+    switch (comparisonMode) {
+      case 'strict': 
+          reStr = "^" + escapeRegExp(commandStr) + "$";
+          break;
+          
+      case 'explicitlyStartsWith': 
+          // The lookahead is appended to prevent false-positive results.
+          reStr = "^" + escapeRegExp(commandStr) + reLookahead;
+          break;
+          
+      case 'startsWith': 
+          reStr = "^" + escapeRegExp(commandStr);
+          break;
+          
+      case 'someWord': 
+          reStr = reLookbehind + escapeRegExp(commandStr) + reLookahead;
+          break;
+          
+      case 'someWordStartsWith': 
+          reStr = reLookbehind + escapeRegExp(commandStr);
+          break;
+          
+      case 'includes': 
+          reStr = escapeRegExp(commandStr);
+          break;
+          
+      case 'custom': 
+          reStr = commandStr;
+          break;
+          
+      default: 
+          throw new Error(
+              "MediaCommand constructor encountered an unknown switch value: " + 
+              comparisonMode);
     }
-  }
-  
-  get url() {
-    /* If an array of media is provided a random element is picked. (That's the 
-     * case when the field's "multiple" parameter is true.) */
-    if (Array.isArray(this.#url)) {
-      const randomIndex = Math.floor(Math.random() * this.#url.length);
-      return this.#url[randomIndex];
-    }
-    return this.#url;
-  }
-  
-  set url(newUrl) {
-    this.#url = newUrl;
+    
+    /* The 'i' flag indicates that case should be ignored while attempting a 
+     * match in a string. */
+    this.regex = new RegExp(reStr, isCaseIgnored ? 'i' : undefined);
   }
   
   /* Sets a global cooldown and an individual cooldown. To avoid unnecessary 
@@ -176,7 +163,7 @@ class MediaCommand {
    * when its respective cooldown has ended. Later code then simply compares 
    * those results to the current epoch time. */
   activateCooldown() {
-    let now = Date.now();
+    const now = Date.now();
     
     // Global cooldown.
     MediaCommand.globalCooldownEndEpoch = 
@@ -194,6 +181,24 @@ class MediaCommand {
     return (Date.now() < this.cooldownEndEpoch);
   }
   
+  /* If an array of media is provided, a random element is picked. (That's the 
+   * case when the field's "multiple" parameter is true.) */
+  get url() {
+    if (Array.isArray(this.#url)) {
+      const randomIndex = Math.floor(Math.random() * this.#url.length);
+      return this.#url[randomIndex];
+    }
+    return this.#url;
+  }
+  
+  set url(newUrl) {
+    this.#url = newUrl;
+  }
+  
+  isTriggeredBy(msg) {
+    return this.regex.test(msg);
+  }
+  
   // Abstract method.
   play() {
     throw new Error("play() wasn't implemented by the child class.");
@@ -206,33 +211,33 @@ class VideoCommand extends MediaCommand {
   
   static {
     // Hide video element immediately (therefore, 0s duration).
-    let hideVideoElmt = 
+    const hideVideoElmt = 
         () => animateCss(VideoCommand.videoElmt, "{{animationOut}}", 0);
     
+    // Ensures a defined initial state.
     hideVideoElmt();
     
-    // When a video playback starts, trigger the in animation.
-    VideoCommand.videoElmt.onplay = () => {
-      animateCss(VideoCommand.videoElmt, "{{animationIn}}", {{timeIn}});
-    };
+    // When a video playback starts, trigger the in-animation.
+    VideoCommand.videoElmt.onplay = 
+        () => animateCss(VideoCommand.videoElmt, "{{animationIn}}", {{timeIn}});
     
     // When an error occurs, unblock the widget.
     VideoCommand.videoElmt.onerror = () => {
-      hideVideoElmt();
+      hideVideoElmt();      // Otherwise the next in-animation would be skipped.
       allowed = true;
       
       throw VideoCommand.videoElmt.error;
     };
     
-    // When a video ends, trigger the out animation.
-    VideoCommand.videoElmt.onended = () => {
-      let animateCssPromise = 
-          animateCss(VideoCommand.videoElmt, "{{animationOut}}", {{timeOut}});
-      
-      /* Unblock the widget only after the out animation has finished. Otherwise
-       * there would be a chance that it's interrupted. */
-      animateCssPromise
-          .finally(() => { allowed = true; });
+    // When a video ends, trigger the out-animation.
+    VideoCommand.videoElmt.onended = async () => {
+      try { 
+        await animateCss(VideoCommand.videoElmt, "{{animationOut}}", {{timeOut}});
+      } finally {
+        /* Unblock the widget only after the out-animation has finished. Otherwise
+         * there would be a chance that it's interrupted. */
+        allowed = true;
+      }
     };
   }
   
@@ -256,10 +261,8 @@ class VideoCommand extends MediaCommand {
 
 class AudioCommand extends MediaCommand {
   play() {
-    let sfx = new Audio(this.url);
+    const sfx = new Audio(this.url);
     sfx.volume = this.normalizedVolume;
-    
-    allowed = false;
     
     // When the audio playback ends, unblock the widget.
     sfx.onended = () => { 
@@ -272,6 +275,8 @@ class AudioCommand extends MediaCommand {
       throw sfx.error;
     };
     
+    allowed = false;
+    
     sfx.play();
     
     this.activateCooldown();
@@ -279,119 +284,111 @@ class AudioCommand extends MediaCommand {
 }
 
 
-window.addEventListener('onWidgetLoad', function (obj) {
-  fieldData = obj.detail.fieldData;
+function onWidgetLoad(obj) {
+  const fieldData = obj.detail.fieldData;
   
-  // Convert user lists to arrays.
-  fieldData.otherUsers = fieldData.otherUsers
-      .toLowerCase()
-      .replace(/\s/g, '')
-      .split(",");
-  fieldData.blockedUsers = fieldData.blockedUsers
+  otherUsers = fieldData.otherUsers
       .toLowerCase()
       .replace(/\s/g, '')
       .split(",");
   
-  channelName = obj.detail.channel.username;
+  blockedUsers = fieldData.blockedUsers
+      .toLowerCase()
+      .replace(/\s/g, '')
+      .split(",");
   
-  let isCaseSensitive = (fieldData.caseSensitivity === "enabled");
+  isUsableByEveryone = (fieldData.permissionsMode === "unrestricted");
+  isUsableByMods = fieldData.permissionLvl_mods;
+  isUsableByVips = fieldData.permissionLvl_vips;
+  isUsableBySubs = fieldData.permissionLvl_subs;
+  
+  isCaseIgnored = (fieldData.caseInsensitivityMode === "enabled");
+  //console.log(`Widget is case-${isCaseIgnored ? "IN" : ""}sensitive.`);
   
   // Initialize MediaCommands and ignore any command without associated URL(s).
   videoPrefixes.forEach((prefix) => {
-    log(`Start initialization for video prefix '${prefix}'.`);
+    //console.log(`Start initialization for video prefix '${prefix}'.`);
     
     let url = fieldData[`${prefix}_url`];
-    if (url) {
-      mediaCommands.push(new VideoCommand(
-          fieldData[`${prefix}_command`], 
-          url, 
-          fieldData[`${prefix}_volume`], 
-          fieldData[`${prefix}_cooldown`], 
-          fieldData[`${prefix}_comparisonMode`], 
-          isCaseSensitive));
+    
+    if (isMediaFieldPopulated(url)) {
+      mediaCommands.push(
+          new VideoCommand(
+              fieldData[`${prefix}_command`], 
+              url, 
+              fieldData[`${prefix}_volume`], 
+              fieldData[`${prefix}_cooldown`], 
+              fieldData[`${prefix}_comparisonMode`]));
     }
   });
   
   audioPrefixes.forEach((prefix) => {
-    log(`Start initialization for audio prefix '${prefix}'.`);
+    //console.log(`Start initialization for audio prefix '${prefix}'.`);
     
     let url = fieldData[`${prefix}_url`];
-    if (url) {
-      mediaCommands.push(new AudioCommand(
-          fieldData[`${prefix}_command`], 
-          url, 
-          fieldData[`${prefix}_volume`], 
-          fieldData[`${prefix}_cooldown`], 
-          fieldData[`${prefix}_comparisonMode`], 
-          isCaseSensitive));
+    
+    if (isMediaFieldPopulated(url)) {
+      mediaCommands.push(
+          new AudioCommand(
+              fieldData[`${prefix}_command`], 
+              url, 
+              fieldData[`${prefix}_volume`], 
+              fieldData[`${prefix}_cooldown`], 
+              fieldData[`${prefix}_comparisonMode`]));
     }
   });
   
   // Unblock the widget when successfully initialized.
   allowed = true;
-});
+}
 
 
-window.addEventListener('onEventReceived', function (obj) {
-  if (obj.detail.listener !== 'message') return;
-  
+function onMessage(msg) {
   if (!allowed) {
-    log("Widget is currently blocked.");
+    //console.log("Widget is currently blocked.");
     return;
   }
   
   if (MediaCommand.isOnGlobalCooldown()) {
-    log("Global cooldown is still running.");
+    //console.log("Global cooldown is still running.");
     return;
   }
   
-  /* Since string comparison has the potential to be computationally expensive, 
-   * it is only executed for users with an sufficient permission level. */
-  
-  let data = obj.detail.event.data;
-  let user = data.nick.toLowerCase();
-  
-  // Blocked users will always fail.
-  if (fieldData.blockedUsers.includes(user)) {
-    log(`'${user}' is on blocked users list.`);
+  // Blocked users are rejected.
+  if (msg.usernameOnList(blockedUsers)) {
+    //console.log(`'${msg.username}' is on blocked users list.`);
     return;
   }
   
-  let userState = {
-    'mod': parseInt(data.tags.mod), 
-    'sub': parseInt(data.tags.subscriber), 
-    'vip': data.tags.badges.includes('vip'), 
-    'broadcaster': (user === channelName)
-  };
-  
-  if ((fieldData.managePermissions === 'everyone') || 
-      (userState.mod && (fieldData.managePermissions === 'mods')) || 
-      ((userState.vip || userState.mod) && (fieldData.managePermissions === 'vips')) || 
-      userState.broadcaster || 
-      fieldData.otherUsers.includes(user)) {
-    
-    log(`'${user}' has sufficient permission level.`);
-    
-    let msg = data.text;
+  // Check if the user has enough permissions for the selected mode.
+  if (isUsableByEveryone || 
+      (isUsableBySubs && msg.isSubscriber()) || 
+      (isUsableByVips && msg.isVIP()) || 
+      (isUsableByMods && msg.isModerator()) || 
+      msg.isBroadcaster() || 
+      msg.usernameOnList(otherUsers)) {
     
     /* The string comparision has to happen prior to the evaluation of the
      * individual cooldown state, because otherwise the whole purpose of a cooldown
      * is undermined. (If two commands have the same trigger phrase and the first
      * one is on cooldown, the second one would be choosen instead.) */
-    let mediaCmd = mediaCommands.find((cmd) => cmd.isTriggeredBy(msg));
+    let mediaCmd = mediaCommands.find((cmd) => cmd.isTriggeredBy(msg.text));
     
     if (!(mediaCmd instanceof MediaCommand)) {
-      log ("No MediaCommand (with an associated URL) reported a match.");
+      //console.log("No MediaCommand (with an associated URL) reported a match.");
       return;
     }
     
     if (mediaCmd.isOnCooldown()) {
-      log(`'${mediaCmd.commandStr}' is still on cooldown.`);
+      //console.log(`'${mediaCmd.commandStr}' is still on cooldown.`);
       return;
     }
     
-    log(`'${mediaCmd.commandStr}' is executed.`);
+    //console.log(`'${mediaCmd.commandStr}' is executed.`);
     
     mediaCmd.play();
-  }
-});
+    
+  } /* else {
+    console.log(`'${msg.username}' has insufficient permissions.`);
+  } */
+}

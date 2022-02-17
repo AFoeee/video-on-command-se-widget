@@ -1,14 +1,29 @@
 {
-  "managePermissions": {
+  "permissionsMode": {
     "type": "dropdown", 
     "label": "Who can trigger the widget?", 
     "options": {
-      "streamer": "Streamer", 
-      "mods": "Streamer + Mods", 
-      "vips": "Streamer + Mods + Vips", 
-      "everyone": "No restrictions"
+      "restricted": "Enforce the checkbox selection", 
+      "unrestricted": "Everyone (ignores checkboxes)"
     }, 
-    "value": "vips", 
+    "value": "restricted", 
+    "group": "Global settings"
+  }, 
+  "permissionLvl_mods": {
+    "type": "checkbox", 
+    "label": "Moderators", 
+    "value": true, 
+    "group": "Global settings"
+  }, 
+  "permissionLvl_vips": {
+    "type": "checkbox", 
+    "label": "VIPs", 
+    "value": true, 
+    "group": "Global settings"
+  }, 
+  "permissionLvl_subs": {
+    "type": "checkbox", 
+    "label": "Subscribers", 
     "group": "Global settings"
   }, 
   "otherUsers": {
@@ -20,14 +35,14 @@
   "blockedUsers": {
     "type": "text", 
     "label": "Blocked users (comma separated):", 
-    "value": "", 
+    "value": "StreamElements", 
     "group": "Global settings"
   }, 
   "globalcooldown": {
     "type": "number", 
     "label": "Global cooldown in sec for commands:", 
     "min": 0, 
-    "value": 300, 
+    "value": 120, 
     "step": 1, 
     "group": "Global settings"
   }, 
@@ -148,14 +163,14 @@
     "group": "Animation settings"
   }, 
   
-  "caseSensitivity": {
+  "caseInsensitivityMode": {
     "type": "dropdown", 
-    "label": "Are commands case sensitive?", 
+    "label": "Are commands case-insensitive?", 
     "options": {
       "enabled": "yes", 
       "disabled": "no"
     }, 
-    "value": "disabled", 
+    "value": "enabled", 
     "group": "Comparision Settings"
   }, 
   
@@ -170,11 +185,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Video #1"
@@ -214,11 +230,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Video #2"
@@ -258,11 +275,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Video #3"
@@ -303,11 +321,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Video #4"
@@ -348,11 +367,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Video #5"
@@ -392,11 +412,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Audio #1"
@@ -436,11 +457,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Audio #2"
@@ -480,11 +502,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Audio #3"
@@ -524,11 +547,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Audio #4"
@@ -568,11 +592,12 @@
     "label": "How to compare chat msg with cmd?", 
     "options": {
       "strict": "msg = cmd", 
-      "firstWord": "cmd is first (single) word", 
-      "firstWordStartsWith": "first (single) word begins with cmd", 
-      "someWord": "cmd is a (single) word in msg", 
-      "someWordStartsWith": "some (single) word begins with cmd", 
-      "regex": "cmd is treated as regular expression"
+      "explicitlyStartsWith": "msg starts with cmd", 
+      "startsWith": "msg starts with cmd (+ extension)", 
+      "someWord": "cmd is a discrete word in msg", 
+      "someWordStartsWith": "some word starts with cmd", 
+      "includes": "msg contains cmd (somewhere)", 
+      "custom": "cmd is treated as regular expression"
     }, 
     "value": "strict", 
     "group": "Audio #5"
@@ -601,29 +626,19 @@
     "group": "Audio #5"
   }, 
   
-  "debugMode": {
-    "type": "dropdown", 
-    "label": "Log debug messages? (F12)", 
-    "options": {
-      "enabled": "yes", 
-      "disabled": "no"
-    }, 
-    "value": "disabled", 
-    "group": "Widget Data"
-  }, 
   "widgetName": {
+    "type": "hidden",
     "value": "VideoOnCommand", 
-    "type": "hidden", 
     "group": "Widget Data"
   }, 
   "widgetAuthor": {
+    "type": "hidden",
     "value": "Benno, avoeh, Suerion", 
-    "type": "hidden", 
     "group": "Widget Data"
   }, 
   "widgetVersion": {
-    "value": 4, 
     "type": "hidden", 
+    "value": 4, 
     "group": "Widget Data"
   }
 }
