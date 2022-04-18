@@ -21,9 +21,19 @@
     "value": true, 
     "group": "Global settings"
   }, 
-  "permissionLvl_subs": {
+  "permissionLvl_subs1": {
     "type": "checkbox", 
-    "label": "Subscribers", 
+    "label": "Sub Tier 1", 
+    "group": "Global settings"
+  }, 
+  "permissionLvl_subs2": {
+    "type": "checkbox", 
+    "label": "Sub Tier 2", 
+    "group": "Global settings"
+  }, 
+  "permissionLvl_subs3": {
+    "type": "checkbox", 
+    "label": "Sub Tier 3", 
     "group": "Global settings"
   }, 
   "otherUsers": {
@@ -638,7 +648,7 @@
   }, 
   "widgetVersion": {
     "type": "hidden", 
-    "value": 4, 
+    "value": 4.1, 
     "group": "Widget Data"
   }
 }

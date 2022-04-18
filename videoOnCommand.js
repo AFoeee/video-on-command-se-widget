@@ -32,7 +32,9 @@ const mediaCommands = [];           // Holds all types of MediaCommand objects.
 let isUsableByEveryone;             // If true, everyone can trigger the widget.
 let isUsableByMods;
 let isUsableByVips;
-let isUsableBySubs;
+let isUsableByTier1;
+let isUsableByTier2;
+let isUsableByTier3;
 let otherUsers;                     // Those users can trigger the widget, too.
 let blockedUsers;                   // Those users are ignored by the widget.
 let isCaseIgnored;                  // If true, the 'i' flag is set in RegExp.
@@ -300,7 +302,9 @@ function onWidgetLoad(obj) {
   isUsableByEveryone = (fieldData.permissionsMode === "unrestricted");
   isUsableByMods = fieldData.permissionLvl_mods;
   isUsableByVips = fieldData.permissionLvl_vips;
-  isUsableBySubs = fieldData.permissionLvl_subs;
+  isUsableByTier1 = fieldData.permissionLvl_subs1;
+  isUsableByTier2 = fieldData.permissionLvl_subs2;
+  isUsableByTier3 = fieldData.permissionLvl_subs3;
   
   isCaseIgnored = (fieldData.caseInsensitivityMode === "enabled");
   //console.log(`Widget is case-${isCaseIgnored ? "IN" : ""}sensitive.`);
@@ -360,9 +364,14 @@ function onMessage(msg) {
     return;
   }
   
+  // Get numerical representation of subscription status (0 = non-sub).
+  const subTier = msg.getTierBadge();
+  
   // Check if the user has enough permissions for the selected mode.
   if (isUsableByEveryone || 
-      (isUsableBySubs && msg.isSubscriber()) || 
+      (isUsableByTier1 && (subTier === 1)) || 
+      (isUsableByTier2 && (subTier === 2)) || 
+      (isUsableByTier3 && (subTier === 3)) || 
       (isUsableByVips && msg.isVIP()) || 
       (isUsableByMods && msg.isModerator()) || 
       msg.isBroadcaster() || 
