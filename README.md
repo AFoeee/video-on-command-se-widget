@@ -1,4 +1,4 @@
-# VideoOnCommand
+# Video On Command
 My version of the StreamElements "Video On Command" custom widget, originally written by Benno.  
 The code builds on Suerion's variation of said widget (v3).  
 
