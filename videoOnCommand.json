@@ -648,7 +648,7 @@
   }, 
   "widgetVersion": {
     "type": "hidden", 
-    "value": 4.1, 
+    "value": 4, 
     "group": "Widget Data"
   }
 }

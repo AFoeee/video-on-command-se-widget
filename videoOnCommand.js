@@ -289,6 +289,9 @@ class AudioCommand extends MediaCommand {
 function onWidgetLoad(obj) {
   const fieldData = obj.detail.fieldData;
   
+  // Makes it easier for the user to look up the widget version.
+  console.log(`Initialize ${fieldData.widgetName} (v${fieldData.widgetVersion}).`);
+  
   otherUsers = fieldData.otherUsers
       .toLowerCase()
       .replace(/\s/g, '')
