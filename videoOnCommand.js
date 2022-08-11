@@ -243,7 +243,7 @@ class VideoCommand extends MediaCommand {
     };
   }
   
-  async play() {
+  play() {
     VideoCommand.videoElmt.pause();
     
     VideoCommand.videoElmt.src = this.url;
