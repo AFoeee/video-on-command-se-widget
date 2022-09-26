@@ -24,9 +24,14 @@ Furthermore, the streamer can limit the access to particular users or user categ
    Also added options for the individual subscription tiers.
  - Introduced two lists to the JavaScript, which hold field prefixes.  
    Those prefixes coupled with structural conventions in 'Fields', should (hopefully) make it easier to append new media commands (like a Xth video command).
- - Set the number of predefined commands to 5 for each media type. 
- - Added a case sensitivity option for the string comparison.
+ - Set the number of predefined commands to 5 for each media type.  
+ - Added a case sensitivity option for the string comparison.  
  - Media input fields with the "multiple" parameter set to true are now supported.  
-   If encountered, a random media is picked from the provided pool.
- - Migrated to a newer [animate.css library](https://github.com/animate-css/animate.css) version (3.7.0 -> 4.1.1).
- - Started to use [Reboot0's Widget Tools](https://reboot0-de.github.io/se-tools/index.html).
+   If encountered, a random media is picked from the provided pool.  
+ - Migrated to a newer [animate.css library](https://github.com/animate-css/animate.css) version (3.7.0 -> 4.1.1).  
+ - Started to use [Reboot0's Widget Tools](https://reboot0-de.github.io/se-tools/index.html).  
+
+
+## Used libraries:  
+ - [Reboot0's Widget Tools](https://reboot0-de.github.io/se-tools/index.html)  
+ - [animate.css](https://github.com/animate-css/animate.css)  
